@@ -1,10 +1,11 @@
 # 1. Base de la imagen (usamos la versión reducida de Debian 12 para ahorrar espacio)
 FROM debian:bookworm-slim
-#Instalacion de Parches de Seguridad
+
+# Instalacion de Parches de Seguridad (Evadiendo validacion de tiempo y menus interactivos)
 RUN DEBIAN_FRONTEND=noninteractive apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq && rm -rf /var/lib/apt/lists/*
 
-# 2. Instalación de dependencias (Actualizamos, instalamos nginx y limpiamos la caché de apt para minimizar el tamaño)
-RUN apt-get update && \
+# 2. Instalación de dependencias (Actualizamos, instalamos nginx y limpiamos la caché de apt)
+RUN apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Check-Date=false update && \
     apt-get install -y nginx curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -12,7 +13,7 @@ RUN apt-get update && \
 # Directorio de trabajo predeterminado para servidores web en Debian
 WORKDIR /var/www/html
 
-# Copiamos el código fuente de nuestro sitio web (lo crearemos en la Tarea 2)
+# Copiamos el código fuente de nuestro sitio web
 COPY ./src .
 
 # 3. Comandos necesarios
