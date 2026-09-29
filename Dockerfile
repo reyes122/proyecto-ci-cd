@@ -1,7 +1,7 @@
 # 1. Base de la imagen (usamos la versión reducida de Debian 12 para ahorrar espacio)
 FROM debian:bookworm-slim
 #Instalacion de Parches de Seguridad
-RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get -o Acquire::Check-Valid-Until=false update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 # 2. Instalación de dependencias (Actualizamos, instalamos nginx y limpiamos la caché de apt para minimizar el tamaño)
 RUN apt-get update && \
